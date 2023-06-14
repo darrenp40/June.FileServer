@@ -1,0 +1,21 @@
+<h2>Search Document</h2>
+<form action="/documents" method="GET"> 
+<div>
+    <label>Title</label>
+    <input type="text" name="title" value="<%= searchOptions.title %>">
+</div>
+<div>
+    <label>Created After</label>
+    <input type="date" name="createdAfter" value="<%= searchOptions.createdAfter %>">
+</div>
+<div>
+    <label>Created Before</label>
+    <input type="date" name="createdBefore" value="<%= searchOptions.createdBefore %>">
+</div>
+    <button type="submit">Search</button>
+</form> 
+<div>
+    <% documents.forEach(document => { %>
+        <img height="150" width="100" src="<%= document.coverImagePath %>">
+<% }) %>
+</div>
