@@ -23,10 +23,10 @@ router.get('/', async (req, res) => {
         query = query.regex('title', new RegExp(req.query.title, 'i'))
     }
     if (req.query.createdBefore != null && (req.query.createdBefore) != '') {
-        query = query.lte('createdDate', req.query.createdBefore)
+        query = query.lte('creationDate', req.query.createdBefore)
     }
     if (req.query.createdAfter != null && (req.query.createdAfter) != '') {
-        query = query.gte('createdDate', req.query.createdAfter)
+        query = query.gte('creationDate', req.query.createdAfter)
     }
     try {
     const documents = await query.exec()
@@ -37,7 +37,6 @@ router.get('/', async (req, res) => {
     } catch {
         res.redirect('/')
     }
-    
 })
 
 
