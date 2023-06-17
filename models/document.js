@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const path = require('path')
-const coverImageBasePath = 'uploads/documentCovers'
 
 const documentSchema = new mongoose.Schema({
 
@@ -24,9 +22,13 @@ const documentSchema = new mongoose.Schema({
         required: true,
         default: Date.now
     },
-    coverImageName: {
-        type: String,
+    coverImage: {
+        type: Buffer,
         required: true 
+    },
+    coverImageType: {
+        type: String,
+        required: true
     },
     creator: {
         type: mongoose.Schema.Types.ObjectId,
@@ -37,10 +39,11 @@ const documentSchema = new mongoose.Schema({
 })
 
 documentSchema.virtual('coverImagePath').get(function() {
-    if (this.coverImageName != null) {
-        return path.join('/', coverImageBasePath, this.coverImageName)
+    if (this.coverImage != null && this.coverImageType != null) {
+        return `data:${this.coverImageType};charset=utf-8;base64,${this.coverImage.toString('base64')}`
+        //return `data:${this.coverImageType};charset=utf-8;base64,${this.coverImage}` 
     }
 })
 
 module.exports = mongoose.model('Document', documentSchema)
-module.exports.coverImageBasePath = coverImageBasePath
+

@@ -1,19 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const multer = require('multer')
-const path = require ('path')
-const fs = require('fs')
 const Document = require('../models/document')
 const Creator = require('../models/creator')
-const uploadPath = path.join('public', Document.coverImageBasePath)
-const imageMimeTypes = ['image/jpg', 'image/png', 'image/gif']
-const { callbackify } = require('util')
-const upload = multer({
-    dest: uploadPath,
-    filterFile: (req, file, callback) => {
-        callback(null, imageMimeTypes.includes(file.imageMimeType))
-    }
-})
+const imageMimeTypes = ['image/jpg', 'image/png', 'image/gif', 'image/docx']
+
 
 //All Documents Route
 
@@ -49,36 +39,26 @@ router.get('/new', async (req, res) => {
 
 // Create Document Route
 
-router.post('/', upload.single('cover'), async (req, res) => {
-    const fileName = req.file != null ? req.file.filename : null
+router.post('/', async (req, res) => {
     const document = new Document({
         title: req.body.title,
         creator: req.body.creator,
         creationDate: new Date(req.body.creationDate),
         pageCount: req.body.pageCount,
-        coverImageName: fileName, 
         description: req.body.description
     }) 
+    saveCover(document, req.body.cover)
 
     try {
         const newDocument = await document.save()
         // res.redirect(`documents/$(newDocument.id)`)
         res.redirect(`documents`)
-    } catch {
-        if (document.coverImageName != null) {
-            removeDocumentCover(document.coverImageName)
-        }
-        
+    } catch {            
         renderNewPage(res, document, true)
 
     }
 })
 
-function removeDocumentCover(fileName) {
-    fs.unlink(path.join(uploadPath, fileName), err => {
-        if (err) console.err(err)
-    })
-}
 
 async function renderNewPage(res, document, hasError = false) {
     try {
@@ -91,6 +71,15 @@ async function renderNewPage(res, document, hasError = false) {
         res.render('documents/new', params)      
     } catch {
         res.redirect('/documents')
+    }
+}
+
+function saveCover(document, coverEncoded) {
+    if (coverEncoded == null) return
+    const cover = JSON.parse(coverEncoded)
+    if (cover != null && imageMimeTypes.includes(cover.type)) {
+        document.coverImage = new Buffer.from(cover.data, 'base64') 
+        document.coverImageType = cover.type
     }
 }
 module.exports = router
