@@ -16,6 +16,8 @@
 </form> 
 <div>
     <% documents.forEach(document => { %>
+        <a href="/documents/<%= document.id %>">
         <img height="150" width="100" src="<%= document.coverImagePath %>">
+        </a>
 <% }) %>
 </div>

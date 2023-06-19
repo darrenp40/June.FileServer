@@ -1,0 +1,10 @@
+<h2><%= document.title %></h2>
+<img width="100" height="150" src="<%= document.coverImagePath %>">
+<div>Creator: <%= document.creator.name %></div>
+<div>Publish Date: <%= document.createdAt.toDateString() %></div>
+<div>Page Count: <%= document.pageCount %></div>
+<div>Description: <%= document.description %></div>
+
+<a href="/documents/<%= document.id %>/edit">Edit</a>
+<%- include('../partials/deleteForm', { url: `/documents/${document.id}` }) %>
+<a href="/creators/<%= document.creator.id %>">View Creator</a>

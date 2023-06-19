@@ -51,28 +51,128 @@ router.post('/', async (req, res) => {
 
     try {
         const newDocument = await document.save()
-        // res.redirect(`documents/$(newDocument.id)`)
-        res.redirect(`documents`)
-    } catch {            
+        res.redirect(`documents/${newDocument.id}`)
+      } catch {  
+         
         renderNewPage(res, document, true)
-
     }
 })
 
 
-async function renderNewPage(res, document, hasError = false) {
+// Show Document Route
+
+// Refactored code:
+router.get('/:id', async (req, res) => {
     try {
-        const creators = await Creator.find({})
-        const params =  {
-            creators: creators,
-            document: document
-        }
-        if (hasError) params.errorMessage = 'Error Creating Document'
-        res.render('documents/new', params)      
-    } catch {
-        res.redirect('/documents')
+      // Find the document by its ID and populate the 'creator' field
+      const document = await Document.findById(req.params.id).populate('creator').exec();
+  
+      // Render the 'documents/show' view with the document object
+      res.render('documents/show', { document: document });
+    } catch (error) {
+      // Handle any errors by redirecting to the homepage
+      res.redirect('/');
     }
+  });
+  
+
+//Edit Document Route
+router.get('/:id/edit', async (req, res) => {
+    try {
+        const document = await Document.findById(req.params.id)
+        renderEditPage(res, document)
+    } catch {
+        res.redirect('/')
+    }
+        
+})
+
+// Update Document Route
+
+router.put('/:id', async (req , res) => {
+    let document
+    try {
+      document = await Document.findById(req.params.id)
+      document.title = req.body.title
+      document.creator = req.body.creator
+      document.creationDate = new Date(req.body.creationDate)
+      document.pageCount = req.body.pageCount
+      document.description = req.body.description
+      if (req.body.cover != null && req.body.cover !== '') {
+        saveCover(document, req.body.cover)
+      }
+      await document.save()
+      res.redirect(`/documents/${document.id}`)
+
+    } catch {
+  
+      if (document != null) {
+          renderEditPage(res, document, true)
+        } else {
+          redirect('/')
+        }
+      }
+    })
+
+// Delete Document Page
+
+router.delete('/:id', async (req, res) => {
+
+    let document
+    try {
+      //document = await Document.findById(req.params.id)
+      const response = await Document.deleteOne({_id: req.params.id})
+      document = await Document.findById(req.params.id)
+      await document.remove()
+      res.redirect('/documents')
+    
+    } catch {
+      
+      if (document != null) {
+        res.render('documents/show', {
+          document: document,
+          errorMessage: 'Could not remove document'
+        })
+      } else {
+        res.redirect('/')
+      }
+      }
+     })
+
+
+async function renderNewPage(res, document, hasError = false) {
+    renderFormPage(res, document, 'new', hasError) 
 }
+
+async function renderEditPage(res, document, hasError = false) {
+    renderFormPage(res, document, 'edit', hasError)
+}
+//Render Form Page
+
+
+
+async function renderFormPage(res, document, form, hasError = false) {
+    try {
+      const creators = await Creator.find({})
+      const params = {
+        creators: creators,
+        document: document
+      }
+      
+      //if (hasError) params.errorMessage = 'Error Rendering Document'
+      
+      {
+        if (form == 'edit') {
+          params.errorMessage = 'Error Updating Document'
+        } else {
+          params.errorMessage = 'Error Creating Document'
+        }
+      }
+      res.render(`documents/${form}`, params)
+    } catch {
+      res.redirect('/documents')
+    }
+    }
 
 function saveCover(document, coverEncoded) {
     if (coverEncoded == null) return

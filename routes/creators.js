@@ -69,25 +69,7 @@ router.post('/', async (req, res) => {
     }
   })
  
-  // Update Creator Route
-
-    /*router.put('/:id', async (req, res) => {
-        let creator
-        try {
-          creator = await Creator.findById(req.params.id)
-          creator.name = req.body.name
-          await creator.save()
-          res.redirect(`/creators/${author.id}`)
-        } catch {
-          if (creator == null) {
-            res.redirect('/')
-          } else {
-            res.render('creators/edit', {
-              creator: creator,
-              errorMessage: 'Error updating Creator'
-            })
-          }*/
-          router.put('/:id', async (req, res) => {
+            router.put('/:id', async (req, res) => {
             try {
               const creator = await Creator.findById(req.params.id);
               if (!creator) {
@@ -106,8 +88,7 @@ router.post('/', async (req, res) => {
             }
           });
           
-      
-      
+         
     
       // Delete Creator Route
 
@@ -120,19 +101,7 @@ router.post('/', async (req, res) => {
           await creator.remove()
           res.redirect('/creators')
 
-          //router.delete('/:id', async (req, res) => {
-          //let creator
-          //  try {
-          //    const creator = await Creator.findByIdAndRemove(req.params.id);
-             // if (!creator) {
-             //   return res.status(404).json({ error: 'Creator not found' });
-             // }
-            //  res.redirect('/creators');
-            //} catch (error) {
-            //  res.status(500).json({ error: 'Internal server error' });
-            //}
-          //});
-              
+                        
         } catch {
           if (creator == null) {
             res.redirect('/')
