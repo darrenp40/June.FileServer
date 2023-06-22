@@ -1,0 +1,35 @@
+@font-face {
+    font-family: 'Agenda';
+    src: url('/fonts/Agenda-Bold.woff2') format('woff2'),
+        url('/fonts/Agenda-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    
+}
+
+@font-face {
+    font-family: 'Agenda';
+    src: url('/fonts/Agenda-Medium.woff2') format('woff2'),
+        url('/fonts/Agenda-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+} 
+
+@font-face {
+    font-family: 'Agenda';
+    src: url('/fonts/Agenda-LightCondensed.woff2') format('woff2'),
+        url('/fonts/Agenda-LightCondensed.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    
+}
+
+@font-face {
+    font-family: 'Agenda';
+    src: url('/fonts/Agenda-Medium.woff2') format('woff2'),
+        url('/fonts/Agenda-Medium.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+   
+}
+

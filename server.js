@@ -1,6 +1,6 @@
-//if (process.env !== 'production'){
-//require('dotenv').config()
-//}
+if (process.env !== 'production'){
+require('dotenv').config()
+}
     
 const express = require ('express')
 const app = express()
