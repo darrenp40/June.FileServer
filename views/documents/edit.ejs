@@ -2,6 +2,8 @@
 <form action="/documents/<%= document.id %>?_method=PUT" 
     method="POST">
     <%- include('_form_fields') %>
-    <a href="/documents">Cancel</a>
-    <button type="submit">Update</button>
+    <div class="form-row form-row-end btn-row">
+    <a class="btn btn-danger" href="/documents">Cancel</a>
+    <button class="btn btn-prmary" type="submit">Update</button>
+    </div>
 </form>

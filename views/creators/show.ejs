@@ -1,8 +1,10 @@
 <h2 class="page-header"><%= creator.name %></h2>
-<a href="/creators/<%= creator.id %>/edit">Edit</a>
-<%- include('../partials/deleteForm', { url: `/creators/$(creator.id)` }) %>
+<div class="btn-row">
+    <a class="btn btn-primary" href="/creators/<%= creator.id %>/edit">Edit</a>
+    <%- include('../partials/deleteForm', { url: `/creators/$(creator.id)` }) %>
+</div>
 <% if (documentsByCreator.length > 0) { %>  
-<h2>Documents By Creator</h2> 
+<h2 class="page-header">Documents By Creator</h2> 
 <% documentsByCreator.forEach(document => { %>
     <img height="150" width="100" src="<%= document.coverImagePath %>">
 <% }) %>   

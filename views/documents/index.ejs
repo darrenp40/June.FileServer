@@ -1,18 +1,24 @@
 <h2 class="page-header">Search Document</h2>
 <form action="/documents" method="GET"> 
-<div>
+<div class="form-row">
+    <div class="form-item">
     <label>Title</label>
     <input type="text" name="title" value="<%= searchOptions.title %>">
+    </div>
 </div>
-<div>
-    <label>Created After</label>
-    <input type="date" name="createdAfter" value="<%= searchOptions.createdAfter %>">
+<div class="form-row">
+    <div class="form-item">
+        <label>Created After</label>
+        <input type="date" name="createdAfter" value="<%= searchOptions.createdAfter %>">
+    </div>
+<div class="form-item">
+        <label>Created Before</label>
+        <input type="date" name="createdBefore" value="<%= searchOptions.createdBefore %>">
+    </div>
 </div>
-<div>
-    <label>Created Before</label>
-    <input type="date" name="createdBefore" value="<%= searchOptions.createdBefore %>">
-</div>
-    <button type="submit">Search</button>
+    <div class="form-row form-row-end">
+    <button class="btn btn-primary" type="submit">Search</button>
+    </div>
 </form> 
 <div>
     <% documents.forEach(document => { %>
